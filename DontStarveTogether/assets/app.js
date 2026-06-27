@@ -11,16 +11,19 @@
     "肉丸": "meatballs.png", "波兰水饺": "pierogi.png", "蜜汁火腿": "honey-ham.png",
     "培根煎蛋": "bacon-eggs.png", "太妃糖": "taffy.png", "烤仙人掌": "cooked-cactus.png",
     "大肉干": "jerky.png", "什锦干果": "trail-mix.png", "肉汤": "meaty-stew.png", "火龙果派": "dragonpie.png",
-    "科学机器": "science-machine.png", "炼金引擎": "alchemy-engine.png", "火坑": "fire-pit.png",
+    "火把储备": "torch.png", "铲子": "shovel.png", "草叉": "pitchfork.png",
+    "科学机器": "science-machine.png", "炼金引擎": "alchemy-engine.png", "冰火坑": "endothermic-fire-pit.png", "火坑": "fire-pit.png",
     "烹饪锅": "crock-pot.png", "冰箱": "ice-box.png", "避雷针": "lightning-rod.png", "木箱": "chest.png",
     "晒肉架": "drying-rack.png", "鸟笼": "birdcage.png", "灵子分解器": "prestihatitator.png",
     "雪球发射器": "ice-flingomatic.png", "蜂箱": "bee-box.png", "背包": "backpack.png", "木甲": "log-suit.png",
     "猪皮帽": "football-helmet.png", "火腿棒": "ham-bat.png", "保暖石": "thermal-stone.png", "冬帽": "winter-hat.png",
+    "针线包": "sewing-kit.png", "牛角帽": "beefalo-hat.png", "花衬衫": "floral-shirt.png", "鱼竿": "fishing-rod.png",
     "雨具": "umbrella.png", "雨伞": "umbrella.png", "眼球伞": "eyebrella.png", "提灯": "lantern.png",
     "矿工帽": "miner-hat.png", "暗夜剑": "dark-sword.png", "步行手杖": "walking-cane.png",
     "猪王": "pig-king.png", "牛群": "beefalo.png", "沼泽": "reeds.png", "龙蝇沙漠": "tumbleweed.png",
     "绿洲沙漠": "oasis.png", "蜂后区": "gigantic-beehive.png", "发条区": "clockwork-knight.png",
-    "矿区": "boulder.png", "洞穴入口": "sinkhole.png", "月岛": "lunar-island.png", "海象营地": "mactusk.png", "墓地": "grave.png"
+    "矿区": "boulder.png", "洞穴入口": "sinkhole.png", "月岛": "lunar-island.png", "海象营地": "mactusk.png", "墓地": "grave.png",
+    "独眼巨鹿战场包": "sign.png", "海象刷取包": "mactusk.png"
   };
   let currentStage = getInitialStage();
   let currentChapter = "overview";
