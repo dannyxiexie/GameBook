@@ -155,7 +155,7 @@ h1 { max-width: 850px; margin: 7px 0 10px; font-size: clamp(32px, 4.2vw, 54px); 
 .stage-ticket em { color: var(--gold); font-size: 10px; font-style: normal; }
 
 .chapter-tabs {
-  display: grid; grid-template-columns: repeat(3, 1fr); margin: 24px 0 18px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); margin: 24px 0 18px;
   border-bottom: 1px solid rgba(35,43,29,.22);
 }
 .chapter-tabs button {

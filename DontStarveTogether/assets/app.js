@@ -26,11 +26,16 @@
     "独眼巨鹿战场包": "sign.png", "海象刷取包": "mactusk.png"
   };
   let currentStage = getInitialStage();
-  let currentChapter = "overview";
+  let currentChapter = defaultChapter(currentStage);
 
   function getInitialStage() {
     const id = new URLSearchParams(location.search).get("stage");
-    return data.stages.some((stage) => stage.id === id) ? id : "start";
+    return data.stages.some((stage) => stage.id === id) ? id : "before";
+  }
+
+  function defaultChapter(stageId) {
+    const stage = data.stages.find((item) => item.id === stageId);
+    return stage ? Object.keys(stage.chapters)[0] : "setup";
   }
 
   function normalize(value) {
@@ -64,7 +69,7 @@
 
   function setStage(id, addHistory) {
     currentStage = id;
-    currentChapter = "overview";
+    currentChapter = defaultChapter(id);
     searchInput.value = "";
     updateSearchClear();
     if (addHistory) history.pushState({ stage: id }, "", `?stage=${id}`);
@@ -216,7 +221,7 @@
   window.addEventListener("popstate", () => {
     if (page !== "stages") return;
     currentStage = getInitialStage();
-    currentChapter = "overview";
+    currentChapter = defaultChapter(currentStage);
     renderStageNav();
     renderStagePage();
   });
