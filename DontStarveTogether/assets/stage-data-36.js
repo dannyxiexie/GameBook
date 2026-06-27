@@ -307,3 +307,145 @@
     }
   ];
 })();
+
+window.STAGE_BANKS = {
+  explore: {
+    materials: [
+      { name: "草", quantity: "40", detail: "出生区、草原直接采集", group: "基础资源", icon: "草_cut-grass.png" },
+      { name: "树枝", quantity: "40", detail: "树苗直接采集", group: "基础资源", icon: "树枝_twigs.png" },
+      { name: "木头", quantity: "20", detail: "斧头砍树", group: "基础资源", icon: "木头_log.png" },
+      { name: "燧石", quantity: "3+", detail: "地面拾取；后续工具还需继续补", group: "基础资源", icon: "燧石_flint.png" },
+      { name: "金子", quantity: "20", detail: "挖含金矿石；也可用肉类向猪王交换", group: "科技", icon: "金子_gold-nugget.png" },
+      { name: "石头", quantity: "40", detail: "挖矿获得", group: "科技", icon: "石头_rocks.png" },
+      { name: "齿轮", quantity: "1+", detail: "发条生物、垃圾场或挖坟；首个留给冰箱", group: "科技", icon: "齿轮_gears.png" },
+      { name: "猪皮", quantity: "10", detail: "拆猪屋、击杀猪人或砸猪头", group: "战利品", icon: "猪皮_pig-skin.png" },
+      { name: "大肉", quantity: "2", detail: "猪人等大型生物掉落", group: "战利品", icon: "大肉_meat.png" },
+      { name: "蛛丝", quantity: "10", detail: "陷阱引蜘蛛，或拆蜘蛛巢", group: "战利品", icon: "蛛丝_silk.png" },
+      { name: "木板", quantity: "10", detail: "优先拆猪屋获得，减少随身木头消耗", group: "拆屋所得", icon: "木板_boards.png" },
+      { name: "石砖", quantity: "10", detail: "优先拆猪屋获得", group: "拆屋所得", icon: "石砖_cut-stone.png" },
+      { name: "荧光果", quantity: "2", detail: "洞穴采集，用于提灯", group: "光源", icon: "荧光果_light-bulb.png" },
+      { name: "萤火虫", quantity: "1", detail: "夜晚用捕虫网抓取，用于矿工帽", group: "光源", icon: "萤火虫_fireflies.png" },
+      { name: "活兔", quantity: "4", detail: "陷阱放在兔洞上捕捉", group: "魔法", icon: "活兔_rabbit.png" },
+      { name: "木炭", quantity: "40", detail: "烧约 20 棵隔离树后砍伐", group: "燃料", icon: "木炭_charcoal.png" }
+    ],
+    crafts: [
+      { name: "斧头", quantity: "按需", detail: "树枝 ×1 + 燧石 ×1", note: "徒手", icon: "斧头_axe.png" },
+      { name: "石镐", quantity: "按需", detail: "树枝 ×2 + 燧石 ×2", note: "徒手", icon: "石镐_pickaxe.png" },
+      { name: "火把", quantity: "每人 2", detail: "草 ×2 + 树枝 ×2", note: "徒手", icon: "火把_torch.png" },
+      { name: "背包", quantity: "每人 1", detail: "草 ×4 + 树枝 ×4", note: "科学机器", icon: "背包_backpack.png" },
+      { name: "科学机器", quantity: "1", detail: "木头 ×4 + 石头 ×4 + 金子 ×1", note: "落地解锁后可敲掉", icon: "科学机器_science-machine.png" },
+      { name: "炼金引擎", quantity: "预制 1", detail: "木板 ×4 + 石砖 ×2 + 电子元件 ×2", note: "科学机器", icon: "炼金引擎_alchemy-engine.png" },
+      { name: "灵子分解器", quantity: "预制 1", detail: "活兔 ×4 + 木板 ×4 + 礼帽 ×1", note: "科学机器", icon: "灵子分解器_prestihatitator.png" },
+      { name: "木甲", quantity: "每人 1", detail: "木头 ×8 + 绳子 ×2", note: "科学机器", icon: "木甲_log-suit.png" },
+      { name: "猪皮帽", quantity: "1+", detail: "猪皮 ×1 + 绳子 ×1", note: "炼金引擎", icon: "猪皮帽_football-helmet.png" },
+      { name: "火腿棒", quantity: "1+", detail: "猪皮 ×1 + 树枝 ×2 + 大肉 ×2", note: "炼金引擎；临战再做", icon: "火腿棒_ham-bat.png" },
+      { name: "长矛", quantity: "1+", detail: "树枝 ×2 + 燧石 ×1 + 绳子 ×1", note: "科学机器", icon: "长矛_spear.png" },
+      { name: "提灯", quantity: "1+", detail: "树枝 ×3 + 绳子 ×2 + 荧光果 ×2", note: "炼金引擎", icon: "提灯_lantern.png" },
+      { name: "矿工帽", quantity: "1+", detail: "草帽 ×1 + 金子 ×1 + 萤火虫 ×1", note: "炼金引擎", icon: "矿工帽_miner-hat.png" },
+      { name: "礼帽", quantity: "1", detail: "蛛丝 ×6", note: "科学机器", icon: "礼帽_top-hat.png" }
+    ]
+  },
+  base: {
+    materials: [
+      { name: "木炭", quantity: "18", detail: "3 个烹饪锅，共需 18", group: "厨房", icon: "木炭_charcoal.png" },
+      { name: "树枝", quantity: "18", detail: "3 个烹饪锅，共需 18", group: "厨房", icon: "树枝_twigs.png" },
+      { name: "石砖", quantity: "10", detail: "烹饪锅 ×3 用 9；冰箱用 1", group: "厨房", icon: "石砖_cut-stone.png" },
+      { name: "齿轮", quantity: "1", detail: "制作冰箱", group: "厨房", icon: "齿轮_gears.png" },
+      { name: "金子", quantity: "2", detail: "制作冰箱", group: "厨房", icon: "金子_gold-nugget.png" },
+      { name: "木头", quantity: "2", detail: "制作石头火坑", group: "火坑", icon: "木头_log.png" },
+      { name: "石头", quantity: "12", detail: "制作石头火坑", group: "火坑", icon: "石头_rocks.png" },
+      { name: "芦苇", quantity: "8", detail: "精炼 2 张纸，制作鸟笼", group: "鸟笼", icon: "芦苇_cut-reeds.png" },
+      { name: "金子", quantity: "6", detail: "制作鸟笼", group: "鸟笼", icon: "金子_gold-nugget.png" },
+      { name: "种子", quantity: "2", detail: "制作鸟笼", group: "鸟笼", icon: "种子_seeds.png" },
+      { name: "蛛丝", quantity: "4", detail: "制作捕鸟陷阱", group: "鸟笼", icon: "蛛丝_silk.png" },
+      { name: "普通种子", quantity: "36 + 5", detail: "种 36 粒；冰箱另留 5 粒", group: "农场", icon: "种子_seeds.png" },
+      { name: "粪", quantity: "3", detail: "制作粪盆；后续继续收集施肥", group: "农场", icon: "粪_manure.png" },
+      { name: "骨渣", quantity: "2", detail: "砸骨头获得，制作粪盆", group: "农场", icon: "骨渣_bone-shard.png" },
+      { name: "木头", quantity: "16+", detail: "耕地机、喷壶、粪盆等", group: "农场", icon: "木头_log.png" },
+      { name: "牛毛", quantity: "8", detail: "夜晚剃牛，留作皮牛帽", group: "牛群", icon: "牛毛_beefalo-wool.png" },
+      { name: "牛角", quantity: "1", detail: "击杀皮弗娄牛概率掉落", group: "牛群", icon: "牛角_beefalo-horn.png" },
+      { name: "金子", quantity: "3", detail: "制作皮弗娄牛铃", group: "牛群", icon: "金子_gold-nugget.png" }
+    ],
+    crafts: [
+      { name: "冰箱", quantity: "1", detail: "金子 ×2 + 齿轮 ×1 + 石砖 ×1", note: "炼金引擎", icon: "冰箱_ice-box.png" },
+      { name: "烹饪锅", quantity: "3", detail: "每个：石砖 ×3 + 木炭 ×6 + 树枝 ×6", note: "科学机器", icon: "烹饪锅_crock-pot.png" },
+      { name: "石头火坑", quantity: "1", detail: "木头 ×2 + 石头 ×12", note: "徒手", icon: "石头火坑_fire-pit.png" },
+      { name: "木箱", quantity: "4+", detail: "每个：木板 ×3", note: "科学机器", icon: "木箱_chest.png" },
+      { name: "鸟笼", quantity: "1", detail: "纸 ×2 + 种子 ×2 + 金子 ×6", note: "炼金引擎", icon: "鸟笼_birdcage.png" },
+      { name: "捕鸟陷阱", quantity: "1", detail: "树枝 ×3 + 蛛丝 ×4", note: "科学机器", icon: "捕鸟陷阱_bird-trap.png" },
+      { name: "晾肉架", quantity: "若干", detail: "树枝 ×3 + 木炭 ×2 + 绳子 ×3", note: "科学机器", icon: "晾肉架_drying-rack.png" },
+      { name: "耕地机", quantity: "1", detail: "木板 ×3 + 绳子 ×2 + 燧石 ×2", note: "科学机器", icon: "耕地机_garden-digamajig.png" },
+      { name: "锄头", quantity: "1", detail: "树枝 ×2 + 燧石 ×2", note: "科学机器", icon: "锄头_garden-hoe.png" },
+      { name: "喷壶", quantity: "1", detail: "木板 ×2 + 绳子 ×1", note: "科学机器", icon: "喷壶_watering-can.png" },
+      { name: "粪盆", quantity: "1", detail: "木头 ×4 + 骨渣 ×2 + 粪 ×3", note: "炼金引擎", icon: "粪盆_bucket-o-poop.png" },
+      { name: "园艺帽", quantity: "1", detail: "粪盆 ×1 + 种子 ×3 + 电子元件 ×1", note: "炼金引擎", icon: "园艺帽_gardeneer-hat.png" },
+      { name: "皮弗娄牛铃", quantity: "1", detail: "金子 ×3 + 燧石 ×1", note: "科学机器", icon: "皮弗娄牛铃_beefalo-bell.png" }
+    ]
+  },
+  prewinter: {
+    materials: [
+      { name: "牛角", quantity: "1 / 顶", detail: "击杀皮弗娄牛概率掉落", group: "皮牛帽", icon: "牛角_beefalo-horn.png" },
+      { name: "牛毛", quantity: "8 / 顶", detail: "夜晚用剃刀采集", group: "皮牛帽", icon: "牛毛_beefalo-wool.png" },
+      { name: "石头", quantity: "10 / 人", detail: "热能石", group: "保暖", icon: "石头_rocks.png" },
+      { name: "树枝", quantity: "2 / 人", detail: "先制作石镐，再用于热能石", group: "保暖", icon: "树枝_twigs.png" },
+      { name: "燧石", quantity: "5 / 人", detail: "石镐用 2；热能石另用 3", group: "保暖", icon: "燧石_flint.png" },
+      { name: "木头", quantity: "随身若干", detail: "紧急生火回温", group: "应急燃料", icon: "木头_log.png" },
+      { name: "草", quantity: "随身若干", detail: "制作火把和营火", group: "应急燃料", icon: "草_cut-grass.png" }
+    ],
+    crafts: [
+      { name: "皮牛帽", quantity: "1+", detail: "牛角 ×1 + 牛毛 ×8", note: "炼金引擎", icon: "皮牛帽_beefalo-hat.png" },
+      { name: "热能石", quantity: "每人 1", detail: "石头 ×10 + 石镐 ×1 + 燧石 ×3", note: "炼金引擎", icon: "热能石_thermal-stone.png" },
+      { name: "火把", quantity: "每人 2", detail: "草 ×2 + 树枝 ×2", note: "徒手；应急回温", icon: "火把_torch.png" }
+    ]
+  },
+  winter: {
+    materials: [
+      { name: "海象牙", quantity: "1", detail: "击杀海象爸爸，约 50% 概率掉落", group: "海象", icon: "海象牙_walrus-tusk.png" },
+      { name: "贝雷帽", quantity: "1", detail: "击杀海象爸爸概率掉落", group: "海象", icon: "贝雷帽_tam-o-shanter.png" },
+      { name: "怪物肉", quantity: "若干", detail: "海象犬、猎犬等掉落", group: "食物", icon: "怪物肉_monster-meat.png" },
+      { name: "冰", quantity: "55+", detail: "做菜约 40；过夏至少预留 15", group: "冬季限定", icon: "冰_ice.png" },
+      { name: "荧光果", quantity: "20", detail: "洞穴采集，放冰箱保存", group: "照明", icon: "荧光果_light-bulb.png" },
+      { name: "犬牙", quantity: "若干", detail: "猎犬掉落；春季做针线包", group: "猎犬", icon: "犬牙_hounds-tooth.png" },
+      { name: "蓝宝石", quantity: "若干", detail: "冰猎犬概率掉落", group: "猎犬", icon: "蓝宝石_blue-gem.png" }
+    ],
+    crafts: [
+      { name: "步行手杖", quantity: "1", detail: "海象牙 ×1 + 金子 ×2 + 树枝 ×4", note: "炼金引擎", icon: "步行手杖_walking-cane.png" },
+      { name: "蔬菜鸡尾酒", quantity: "按需", detail: "番茄 ×2 + 另一份蔬菜 ×1 + 冰 ×1", note: "烹饪锅；恢复 33 理智", icon: "蔬菜鸡尾酒_vegetable-stinger.png" }
+    ]
+  },
+  deerclops: {
+    materials: [
+      { name: "护甲", quantity: "2 套 / 人", detail: "木甲或猪皮帽，低耐久及时替换", group: "战斗", icon: "猪皮帽_football-helmet.png" },
+      { name: "主武器", quantity: "1 / 人", detail: "优先使用新鲜火腿棒", group: "战斗", icon: "火腿棒_ham-bat.png" },
+      { name: "备用武器", quantity: "1 / 人", detail: "长矛或第二根火腿棒", group: "战斗", icon: "长矛_spear.png" },
+      { name: "饺子", quantity: "若干", detail: "Boss 战快速恢复生命", group: "治疗", icon: "饺子_pierogi.png" },
+      { name: "仙人掌", quantity: "15", detail: "烤熟后补理智", group: "理智", icon: "烤仙人掌_cooked-cactus.png" },
+      { name: "燃料", quantity: "至少 3", detail: "木头、木炭、粪或格罗姆粘液", group: "营火", icon: "木头_log.png" },
+      { name: "木头", quantity: "6", detail: "告示牌需 4；营火需 2", group: "战场", icon: "木头_log.png" },
+      { name: "草", quantity: "3", detail: "制作营火", group: "战场", icon: "草_cut-grass.png" }
+    ],
+    crafts: [
+      { name: "告示牌", quantity: "1", detail: "木板 ×1", note: "科学机器；用于诱导生成", icon: "告示牌_sign.png" },
+      { name: "营火", quantity: "1", detail: "木头 ×2 + 草 ×3", note: "徒手；战场照明", icon: "营火_campfire.png" },
+      { name: "新鲜火腿棒", quantity: "1+", detail: "猪皮 ×1 + 树枝 ×2 + 大肉 ×2", note: "炼金引擎；临战制作", icon: "火腿棒_ham-bat.png" }
+    ]
+  },
+  spring: {
+    materials: [
+      { name: "独眼巨鹿眼球", quantity: "1", detail: "独眼巨鹿掉落", group: "眼球伞", icon: "独眼巨鹿眼球_deerclops-eyeball.png" },
+      { name: "树枝", quantity: "15", detail: "制作眼球伞", group: "眼球伞", icon: "树枝_twigs.png" },
+      { name: "骨片", quantity: "4", detail: "砸骨架获得，制作眼球伞", group: "眼球伞", icon: "骨渣_bone-shard.png" },
+      { name: "金子", quantity: "4", detail: "制作避雷针", group: "避雷针", icon: "金子_gold-nugget.png" },
+      { name: "石头", quantity: "3", detail: "精炼 1 个石砖，制作避雷针", group: "避雷针", icon: "石头_rocks.png" },
+      { name: "猪皮", quantity: "按人数", detail: "替代方案：猪皮帽 + 雨伞", group: "雨具", icon: "猪皮_pig-skin.png" },
+      { name: "蛛丝", quantity: "2 / 伞", detail: "制作雨伞", group: "雨具", icon: "蛛丝_silk.png" },
+      { name: "触手皮", quantity: "2 / 件", detail: "沼泽触手掉落，制作雨衣", group: "雨具", icon: "触手皮_tentacle-spots.png" }
+    ],
+    crafts: [
+      { name: "眼球伞", quantity: "1", detail: "独眼巨鹿眼球 ×1 + 树枝 ×15 + 骨片 ×4", note: "100% 防雨并防雷", icon: "眼球伞_eyebrella.png" },
+      { name: "避雷针", quantity: "1+", detail: "金子 ×4 + 石砖 ×1", note: "科学机器；覆盖基地核心区", icon: "避雷针_lightning-rod.png" },
+      { name: "猪皮帽 + 雨伞", quantity: "其余每人 1 套", detail: "猪皮帽 ×1 + 雨伞 ×1", note: "防雨足够，但不防雷", icon: "umbrella.png" },
+      { name: "雨衣", quantity: "可选", detail: "触手皮 ×2 + 绳子 ×2 + 骨片 ×2", note: "100% 防雨并防雷，占身体栏", icon: "雨衣_rain-coat.png" }
+    ]
+  }
+};

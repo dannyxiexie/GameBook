@@ -46,6 +46,35 @@
     return normalize(JSON.stringify(card)).includes(normalize(query));
   }
 
+  function getBank(stageId, chapterKey) {
+    return window.STAGE_BANKS?.[stageId]?.[chapterKey] || null;
+  }
+
+  function renderBankTable(rows, showChapter = false) {
+    return `
+      <div class="item-bank-wrap">
+        <table class="item-bank">
+          <thead><tr><th>物品</th><th>数量</th><th>配方 / 获取</th><th>${showChapter ? "页签" : "分类 / 提醒"}</th></tr></thead>
+          <tbody>
+            ${rows.map((row) => `
+              <tr data-search-card>
+                <td>
+                  <div class="item-bank__item">
+                    <span class="item-bank__icon" aria-hidden="true">${row.icon ? `<img src="assets/icons/${row.icon}" alt="" loading="lazy">` : "✦"}</span>
+                    <strong>${row.name}</strong>
+                  </div>
+                </td>
+                <td><b class="item-bank__quantity">${row.quantity || "—"}</b></td>
+                <td><span class="item-bank__detail">${row.detail || "—"}</span></td>
+                <td><span class="item-bank__meta">${showChapter ? row.chapter : row.note || row.group || "—"}</span></td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
   function renderStageNav() {
     stageNav.innerHTML = data.stages.map((stage, index) => `
       <button class="stage-nav__item ${page === "stages" && stage.id === currentStage ? "is-active" : ""}"
@@ -131,21 +160,32 @@
     document.title = `${stage.nav}｜饥荒联机版四人开荒指南`;
 
     if (query) {
-      const results = Object.values(stage.chapters).flatMap((chapter) =>
-        chapter.cards.filter((card) => matches(card, query)).map((card) => ({ card, label: chapter.label }))
-      );
+      const cardResults = [];
+      const bankResults = [];
+      Object.entries(stage.chapters).forEach(([key, chapter]) => {
+        const bank = getBank(stage.id, key);
+        if (bank) {
+          bank.filter((row) => matches(row, query)).forEach((row) => bankResults.push({ ...row, chapter: chapter.label }));
+        } else {
+          chapter.cards.filter((card) => matches(card, query)).forEach((card) => cardResults.push({ card, label: chapter.label }));
+        }
+      });
+      const resultCount = bankResults.length + cardResults.length;
       content.innerHTML = `
         ${renderStageHero(stage)}
         <section class="search-report">
           <div><span>关键词</span><strong>“${escapeHtml(query)}”</strong></div>
-          <p>在「${stage.nav}」阶段找到 ${results.length} 张卡片</p>
+          <p>在「${stage.nav}」阶段找到 ${resultCount} 项</p>
         </section>
-        ${results.length ? `<div class="card-grid search-grid">${results.map(({ card, label }) => renderCard(card, label)).join("")}</div>` : renderEmpty(query)}
+        ${bankResults.length ? renderBankTable(bankResults, true) : ""}
+        ${cardResults.length ? `<div class="card-grid search-grid">${cardResults.map(({ card, label }) => renderCard(card, label)).join("")}</div>` : ""}
+        ${resultCount ? "" : renderEmpty(query)}
       `;
       return;
     }
 
     const chapter = stage.chapters[currentChapter];
+    const bank = getBank(stage.id, currentChapter);
     content.innerHTML = `
       ${renderStageHero(stage)}
       <nav class="chapter-tabs" aria-label="阶段章节">
@@ -159,7 +199,7 @@
         <header class="section-heading">
           <div><span>CHAPTER</span><h2>${chapter.label}</h2></div>
         </header>
-        <div class="card-grid">${chapter.cards.map((card) => renderCard(card)).join("")}</div>
+        ${bank ? renderBankTable(bank) : `<div class="card-grid">${chapter.cards.map((card) => renderCard(card)).join("")}</div>`}
       </section>
     `;
 
