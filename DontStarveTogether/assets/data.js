@@ -288,19 +288,25 @@ window.GUIDE_DATA = {
     food: {
       title: "食物速查",
       eyebrow: "四人厨房",
-      intro: "优先记住高频模板，不必背全食谱。卡片中的“度”是烹饪锅判定值；新手直接照常用组合放即可。",
+      intro: "优先记住高频模板，不必背全食谱。阶段可以直接修改，收藏和修改结果会保存在当前浏览器。",
       note: "数值按《饥荒联机版》常规角色整理，角色特性可能改变实际收益。",
       cards: [
-        { icon: "🍖", title: "肉丸", badge: "主食", stats: ["生命 +3", "饥饿 +62.5", "精神 +5"], text: "低成本消耗怪物肉的核心主食。", recipe: "1 怪物肉 + 3 冰 / 浆果", source: "肉来自蜘蛛、猎犬；冰在冬季矿区大量采集。", tags: ["肉", "冰", "锅", "前期"] },
-        { icon: "🥟", title: "波兰水饺", badge: "治疗", stats: ["生命 +40", "饥饿 +37.5", "精神 +5"], text: "Boss 战最通用的治疗料理之一。", recipe: "1 怪物肉 + 1 蛋 + 1 胡萝卜/蘑菇 + 1 冰", source: "鸟笼用熟肉换蛋；蔬菜来自采集或农场。", tags: ["治疗", "蛋", "蔬菜", "Boss"] },
-        { icon: "🍯", title: "蜜汁火腿", badge: "饱食", stats: ["生命 +30", "饥饿 +75", "精神 +5"], text: "肉与蜂蜜充足时的高效综合料理。", recipe: "2 大肉 + 1 蜂蜜 + 1 浆果 / 冰", source: "蜂蜜来自蜂箱；大肉来自猪人、牛、考拉象等。", tags: ["蜂蜜", "大肉", "回血"] },
-        { icon: "🥓", title: "培根煎蛋", badge: "长保质", stats: ["生命 +20", "饥饿 +75", "精神 +5"], text: "保质期长，适合远征和冬季储粮。", recipe: "1 怪物肉 + 1 小肉 + 2 蛋", source: "鸟笼将熟肉换蛋；小肉来自兔子、鼹鼠等。", tags: ["蛋", "肉", "远征"] },
-        { icon: "🍬", title: "太妃糖", badge: "精神", stats: ["生命 -3", "饥饿 +25", "精神 +15"], text: "蜂蜜体系稳定后快速补精神。", recipe: "3 蜂蜜 + 1 树枝", source: "蜂箱生产蜂蜜；不要加入肉类。", tags: ["精神", "蜂蜜", "甜品"] },
-        { icon: "🌵", title: "烤仙人掌肉", badge: "零锅", stats: ["生命 +1", "饥饿 +12.5", "精神 +15"], text: "沙漠常见的低成本精神补给，采集时会受伤。", recipe: "仙人掌肉放火上烤", source: "两种沙漠均可采集；穿护甲降低采集伤害。", tags: ["仙人掌", "沙漠", "精神"] },
-        { icon: "🥩", title: "大肉干", badge: "储粮", stats: ["生命 +20", "饥饿 +25", "精神 +15"], text: "保存久且三项属性都能补，适合作为战斗包。", recipe: "大肉放晒肉架，等待 2 游戏日", source: "雨天会暂停晾晒；成品尽快放冰箱。", tags: ["晒肉架", "肉干", "精神", "治疗"] },
-        { icon: "🥜", title: "什锦干果", badge: "前期治疗", stats: ["生命 +30", "饥饿 +12.5", "精神 +5"], text: "桦栗树林附近的前期治疗料理。", recipe: "1 烤桦栗 + 2 浆果 + 1 树枝", source: "砍桦树获得桦栗；桦树变异时注意树精。", tags: ["桦栗", "浆果", "治疗"] },
-        { icon: "🍲", title: "肉汤", badge: "极高饱食", stats: ["生命 +12", "饥饿 +150", "精神 +5"], text: "适合高饥饿角色，不要给普通角色造成溢出浪费。", recipe: "肉度 ≥3，例如 3 大肉 + 1 冰", source: "需要稳定的大肉来源。", tags: ["大肉", "高饥饿"] },
-        { icon: "🫐", title: "火龙果派", badge: "素食治疗", stats: ["生命 +40", "饥饿 +75", "精神 +5"], text: "农场获得火龙果后可稳定复制种子。", recipe: "1 火龙果 + 3 树枝 / 非肉填充", source: "巨大作物与鸟笼种子循环可扩大产量。", tags: ["火龙果", "农场", "治疗", "素食"] }
+        { id: "meatballs", image: "meatballs.png", title: "肉丸", badge: "主食", stage: "前期", hunger: 62.5, health: 3, sanity: 5, recipe: "1 怪物肉 + 3 冰 / 浆果", source: "蜘蛛或猎犬供肉；最省事主食。", tags: ["肉", "冰", "锅"] },
+        { id: "butter-muffin", image: "蝴蝶松饼_butter-muffin.png", title: "蝴蝶松饼", badge: "治疗", stage: "前期", hunger: 37.5, health: 20, sanity: 5, recipe: "1 蝴蝶翅膀 + 1 蔬菜 + 2 树枝", source: "白天抓蝴蝶；不能放肉。", tags: ["蝴蝶", "蔬菜", "治疗"] },
+        { id: "froggle-bunwich", image: "蛙腿三明治_froggle-bunwich.png", title: "蛙腿三明治", badge: "治疗", stage: "前期", hunger: 37.5, health: 20, sanity: 5, recipe: "1 蛙腿 + 1 蔬菜 + 2 树枝", source: "池塘或下雨天取蛙腿。", tags: ["青蛙", "蔬菜", "治疗"] },
+        { id: "fishsticks", image: "鱼排_fishsticks.png", title: "鱼排", badge: "大治疗", stage: "前期", hunger: 37.5, health: 40, sanity: 5, recipe: "1 鱼 + 1 树枝 + 2 填充", source: "树枝只能放 1 根；池塘钓鱼。", tags: ["鱼", "树枝", "治疗"] },
+        { id: "guacamole", image: "鳄梨酱_guacamole.png", title: "鳄梨酱", badge: "沙漠治疗", stage: "前期", hunger: 37.5, health: 20, sanity: 0, recipe: "1 鼹鼠 + 1 生仙人掌 + 2 树枝", source: "沙漠两种原料可就地取得。", tags: ["鼹鼠", "仙人掌", "治疗"] },
+        { id: "trail-mix", image: "trail-mix.png", title: "什锦干果", badge: "前期治疗", stage: "前期", hunger: 12.5, health: 30, sanity: 5, recipe: "1 烤桦栗 + 2 浆果 + 1 树枝", source: "桦树林就地做；不放肉和蔬菜。", tags: ["桦栗", "浆果", "治疗"] },
+        { id: "cooked-cactus", image: "cooked-cactus.png", title: "烤仙人掌肉", badge: "零锅", stage: "前期", hunger: 12.5, health: 1, sanity: 15, recipe: "仙人掌肉放火上烤", source: "穿护甲采摘；快速补精神。", tags: ["仙人掌", "沙漠", "精神"] },
+        { id: "pierogi", image: "pierogi.png", title: "波兰水饺", badge: "大治疗", stage: "中期", hunger: 37.5, health: 40, sanity: 5, recipe: "1 怪物肉 + 1 蛋 + 1 蔬菜 + 1 冰", source: "鸟笼用熟肉换蛋；Boss 常备。", tags: ["治疗", "蛋", "蔬菜", "Boss"] },
+        { id: "bunny-stew", image: "炖兔子_bunny-stew.png", title: "炖兔子", badge: "冬季治疗", stage: "中期", hunger: 37.5, health: 20, sanity: 5, recipe: "1 小肉 + 2 冰 + 1 浆果", source: "肉度必须小于 1；食用后短暂升温。", tags: ["小肉", "冰", "冬天", "治疗"] },
+        { id: "bacon-eggs", image: "bacon-eggs.png", title: "培根煎蛋", badge: "长保质", stage: "中期", hunger: 75, health: 20, sanity: 5, recipe: "1 怪物肉 + 1 小肉 + 2 蛋", source: "鸟笼换蛋；适合远征储粮。", tags: ["蛋", "肉", "远征"] },
+        { id: "honey-nuggets", image: "甜蜜金砖_honey-nuggets.png", title: "甜蜜金砖", badge: "治疗", stage: "中期", hunger: 37.5, health: 20, sanity: 5, recipe: "1 小肉/怪物肉 + 1 蜂蜜 + 2 填充", source: "肉度不超过 1.5；蜂箱稳定后做。", tags: ["蜂蜜", "肉", "治疗"] },
+        { id: "honey-ham", image: "honey-ham.png", title: "蜜汁火腿", badge: "综合", stage: "中期", hunger: 75, health: 30, sanity: 5, recipe: "2 大肉 + 1 蜂蜜 + 1 冰 / 浆果", source: "肉度需大于 1.5；蜂箱稳定后做。", tags: ["蜂蜜", "大肉", "治疗"] },
+        { id: "taffy", image: "taffy.png", title: "太妃糖", badge: "精神", stage: "中期", hunger: 25, health: -3, sanity: 15, recipe: "3 蜂蜜 + 1 树枝", source: "不要放肉；少量扣生命。", tags: ["精神", "蜂蜜", "甜品"] },
+        { id: "jerky", image: "jerky.png", title: "大肉干", badge: "储粮", stage: "中期", hunger: 25, health: 20, sanity: 15, recipe: "大肉放晒肉架，等待 2 游戏日", source: "雨天暂停；成品放冰箱。", tags: ["晒肉架", "肉干", "精神", "治疗"] },
+        { id: "meaty-stew", image: "meaty-stew.png", title: "肉汤", badge: "极高饱食", stage: "中期", hunger: 150, health: 12, sanity: 5, recipe: "肉度 ≥3，例如 3 大肉 + 1 冰", source: "高饥饿角色优先，避免数值溢出。", tags: ["大肉", "高饥饿"] },
+        { id: "dragonpie", image: "dragonpie.png", title: "火龙果派", badge: "素食治疗", stage: "后期", hunger: 75, health: 40, sanity: 5, recipe: "1 火龙果 + 3 树枝", source: "农场与鸟笼种子循环稳定后做。", tags: ["火龙果", "农场", "治疗", "素食"] }
       ]
     },
     buildings: {

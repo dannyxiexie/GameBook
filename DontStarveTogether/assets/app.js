@@ -9,7 +9,12 @@
   const searchScope = document.querySelector("#search-scope");
   const planData = window.CRAFTING_PLAN_DATA || { components: {}, materials: {}, stages: {} };
   const planStorageKey = "dst-four-player-crafting-plan-v1";
+  const foodStageStorageKey = "dst-food-stages-v1";
+  const foodFavoritesStorageKey = "dst-food-favorites-v1";
   let planStore = loadPlanStore();
+  let foodStageStore = loadStoredValue(foodStageStorageKey, {});
+  let foodFavorites = new Set(loadStoredValue(foodFavoritesStorageKey, []));
+  const foodFilters = { stage: "全部", effects: new Set(), favoritesOnly: false };
   let planNoticeStage = null;
   const iconByTitle = {
     "肉丸": "meatballs.png", "波兰水饺": "pierogi.png", "蜜汁火腿": "honey-ham.png",
@@ -64,6 +69,16 @@
   function loadPlanStore() {
     try { return JSON.parse(localStorage.getItem(planStorageKey)) || {}; }
     catch (_error) { return {}; }
+  }
+
+  function loadStoredValue(key, fallback) {
+    try { return JSON.parse(localStorage.getItem(key)) || fallback; }
+    catch (_error) { return fallback; }
+  }
+
+  function saveStoredValue(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); }
+    catch (_error) { /* Keep the current session usable when storage is unavailable. */ }
   }
 
   function getPlan(stageId) {
@@ -339,6 +354,10 @@
   function renderQuickPage() {
     const quick = data.quick[page];
     if (!quick) return;
+    if (page === "food") {
+      renderFoodPage(quick);
+      return;
+    }
     const query = searchInput.value.trim();
     const cards = query ? quick.cards.filter((card) => matches(card, query)) : quick.cards;
     searchScope.textContent = `搜索范围：${quick.title.replace("速查", "")}`;
@@ -356,12 +375,132 @@
     `;
   }
 
+  function foodStage(card) {
+    return ["前期", "中期", "后期"].includes(foodStageStore[card.id]) ? foodStageStore[card.id] : card.stage;
+  }
+
+  function foodMatchesFilters(card, query) {
+    if (query && !matches({ ...card, stage: foodStage(card) }, query)) return false;
+    if (foodFilters.stage !== "全部" && foodStage(card) !== foodFilters.stage) return false;
+    if (foodFilters.favoritesOnly && !foodFavorites.has(card.id)) return false;
+    return [...foodFilters.effects].every((effect) => Number(card[effect]) > 0);
+  }
+
+  function foodStageOptions(selected) {
+    return ["前期", "中期", "后期"].map((stage) => `<option value="${stage}" ${stage === selected ? "selected" : ""}>${stage}</option>`).join("");
+  }
+
+  function effectValue(label, value, key) {
+    const number = Number(value) || 0;
+    const sign = number > 0 ? "+" : "";
+    return `<span class="food-effect food-effect--${key} ${number < 0 ? "is-negative" : ""}"><small>${label}</small><b>${sign}${number}</b></span>`;
+  }
+
+  function renderFoodTable(cards) {
+    return `
+      <div class="food-bank-wrap">
+        <table class="food-bank">
+          <thead><tr><th>料理</th><th>阶段（可改）</th><th>回复</th><th>常用配方</th><th>获取 / 提醒</th><th><span class="sr-only">收藏</span>★</th></tr></thead>
+          <tbody>
+            ${cards.map((card) => {
+              const favorite = foodFavorites.has(card.id);
+              return `<tr data-search-card>
+                <td><div class="food-name"><span><img src="assets/icons/${card.image}" alt="" loading="lazy"></span><div><strong>${card.title}</strong><small>${card.badge}</small></div></div></td>
+                <td><select class="food-stage-select" data-food-stage="${card.id}" aria-label="修改${card.title}的阶段">${foodStageOptions(foodStage(card))}</select></td>
+                <td><div class="food-effects">${effectValue("饥", card.hunger, "hunger")}${effectValue("精", card.sanity, "sanity")}${effectValue("命", card.health, "health")}</div></td>
+                <td><strong class="food-recipe">${card.recipe}</strong></td>
+                <td><span class="food-source">${card.source}</span></td>
+                <td><button type="button" class="favorite-button ${favorite ? "is-favorite" : ""}" data-food-favorite="${card.id}" aria-pressed="${favorite}" aria-label="${favorite ? "取消收藏" : "收藏"}${card.title}">${favorite ? "★" : "☆"}</button></td>
+              </tr>`;
+            }).join("")}
+          </tbody>
+        </table>
+      </div>
+    `;
+  }
+
+  function renderFoodPage(quick) {
+    const query = searchInput.value.trim();
+    const cards = quick.cards.filter((card) => foodMatchesFilters(card, query));
+    const hasFilters = foodFilters.stage !== "全部" || foodFilters.effects.size || foodFilters.favoritesOnly;
+    searchScope.textContent = "搜索范围：食物";
+    document.title = `${quick.title}｜饥荒联机版四人开荒指南`;
+    content.innerHTML = `
+      <section class="quick-hero content-top">
+        <div class="eyebrow"><span>QUICK CHECK</span> / ${quick.eyebrow}</div>
+        <div class="quick-hero__row">
+          <div><h1>${quick.title}</h1><p class="food-intro">${quick.intro}</p></div>
+          <div class="count-stamp"><strong>${quick.cards.length}</strong><span>份常用食谱</span></div>
+        </div>
+      </section>
+      <section class="food-filterbar" aria-label="食物筛选">
+        <label class="food-stage-filter"><span>阶段</span><select id="food-stage-filter"><option value="全部">全部</option>${["前期", "中期", "后期"].map((stage) => `<option value="${stage}" ${foodFilters.stage === stage ? "selected" : ""}>${stage}</option>`).join("")}</select></label>
+        <div class="food-effect-filters" role="group" aria-label="按回复效果筛选">
+          ${[["hunger", "饥饿"], ["sanity", "精神"], ["health", "生命"]].map(([key, label]) => `<label><input type="checkbox" data-food-effect="${key}" ${foodFilters.effects.has(key) ? "checked" : ""}><span>${label}</span></label>`).join("")}
+        </div>
+        <button type="button" id="food-favorites-filter" class="favorites-filter ${foodFilters.favoritesOnly ? "is-active" : ""}" aria-pressed="${foodFilters.favoritesOnly}"><span>${foodFilters.favoritesOnly ? "★" : "☆"}</span> 只看收藏</button>
+        ${hasFilters ? `<button type="button" id="food-filter-reset" class="food-filter-reset">清除筛选</button>` : ""}
+        <strong class="food-result-count">显示 ${cards.length} / ${quick.cards.length}</strong>
+      </section>
+      ${query ? `<section class="search-report"><div><span>关键词</span><strong>“${escapeHtml(query)}”</strong></div><p>找到 ${cards.length} 份食谱</p></section>` : ""}
+      ${cards.length ? renderFoodTable(cards) : `<section class="empty-state"><span>☆</span><h2>没有符合条件的食谱</h2><p>换个阶段或减少勾选条件。</p><button type="button" id="food-empty-reset">清除筛选</button></section>`}
+    `;
+    wireFoodPage();
+  }
+
+  function resetFoodFilters(clearQuery = false) {
+    foodFilters.stage = "全部";
+    foodFilters.effects.clear();
+    foodFilters.favoritesOnly = false;
+    if (clearQuery) {
+      searchInput.value = "";
+      updateSearchClear();
+    }
+    renderFoodPage(data.quick.food);
+  }
+
+  function wireFoodPage() {
+    content.querySelector("#food-stage-filter")?.addEventListener("change", (event) => {
+      foodFilters.stage = event.target.value;
+      renderFoodPage(data.quick.food);
+    });
+    content.querySelectorAll("[data-food-effect]").forEach((input) => {
+      input.addEventListener("change", () => {
+        if (input.checked) foodFilters.effects.add(input.dataset.foodEffect);
+        else foodFilters.effects.delete(input.dataset.foodEffect);
+        renderFoodPage(data.quick.food);
+      });
+    });
+    content.querySelector("#food-favorites-filter")?.addEventListener("click", () => {
+      foodFilters.favoritesOnly = !foodFilters.favoritesOnly;
+      renderFoodPage(data.quick.food);
+    });
+    content.querySelectorAll("[data-food-stage]").forEach((select) => {
+      select.addEventListener("change", () => {
+        foodStageStore = { ...foodStageStore, [select.dataset.foodStage]: select.value };
+        saveStoredValue(foodStageStorageKey, foodStageStore);
+        renderFoodPage(data.quick.food);
+      });
+    });
+    content.querySelectorAll("[data-food-favorite]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const id = button.dataset.foodFavorite;
+        if (foodFavorites.has(id)) foodFavorites.delete(id);
+        else foodFavorites.add(id);
+        saveStoredValue(foodFavoritesStorageKey, [...foodFavorites]);
+        renderFoodPage(data.quick.food);
+      });
+    });
+    content.querySelector("#food-filter-reset")?.addEventListener("click", () => resetFoodFilters(false));
+    content.querySelector("#food-empty-reset")?.addEventListener("click", () => resetFoodFilters(true));
+  }
+
   function renderEmpty(query) {
     return `<section class="empty-state"><span>🪶</span><h2>没有找到相关卡片</h2><p>换个更短的关键词试试，比如“齿轮”“冬天”或“治疗”。</p><button type="button" id="empty-clear">清除“${escapeHtml(query)}”</button></section>`;
   }
 
   function escapeHtml(value) {
-    return value.replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
+    return String(value).replace(/[&<>'"]/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[char]);
   }
 
   function updateSearchClear() {
