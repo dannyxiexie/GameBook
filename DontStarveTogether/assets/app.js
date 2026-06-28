@@ -7,6 +7,10 @@
   const searchInput = document.querySelector("#search-input");
   const searchClear = document.querySelector("#search-clear");
   const searchScope = document.querySelector("#search-scope");
+  const planData = window.CRAFTING_PLAN_DATA || { components: {}, materials: {}, stages: {} };
+  const planStorageKey = "dst-four-player-crafting-plan-v1";
+  let planStore = loadPlanStore();
+  let planNoticeStage = null;
   const iconByTitle = {
     "肉丸": "meatballs.png", "波兰水饺": "pierogi.png", "蜜汁火腿": "honey-ham.png",
     "培根煎蛋": "bacon-eggs.png", "太妃糖": "taffy.png", "烤仙人掌": "cooked-cactus.png",
@@ -47,10 +51,94 @@
   }
 
   function getBank(stageId, chapterKey) {
-    return window.STAGE_BANKS?.[stageId]?.[chapterKey] || null;
+    const bank = window.STAGE_BANKS?.[stageId]?.[chapterKey] || null;
+    if (!bank) return null;
+    if (chapterKey === "materials") return buildMaterialRows(stageId, bank);
+    if (chapterKey === "crafts") {
+      const counts = getPlan(stageId);
+      return bank.map((row) => ({ ...row, quantity: counts[row.name] ?? 0 }));
+    }
+    return bank;
   }
 
-  function renderBankTable(rows, showChapter = false) {
+  function loadPlanStore() {
+    try { return JSON.parse(localStorage.getItem(planStorageKey)) || {}; }
+    catch (_error) { return {}; }
+  }
+
+  function getPlan(stageId) {
+    const defaults = planData.stages[stageId]?.defaults || {};
+    return { ...defaults, ...(planStore[stageId] || {}) };
+  }
+
+  function savePlan(stageId, counts) {
+    planStore = { ...planStore, [stageId]: counts };
+    try { localStorage.setItem(planStorageKey, JSON.stringify(planStore)); }
+    catch (_error) { /* Private browsing may disable storage; current page still updates. */ }
+  }
+
+  function canonicalMaterialName(name) {
+    return ({ "普通种子": "种子", "骨渣": "骨片" })[name] || name;
+  }
+
+  function numericTarget(value) {
+    const text = String(value || "");
+    const numbers = text.match(/\d+(?:\.\d+)?/g)?.map(Number) || [];
+    if (!numbers.length) return 0;
+    return text.includes("+") ? numbers.reduce((sum, value) => sum + value, 0) : numbers[0];
+  }
+
+  function addIngredient(totals, name, amount, trail = []) {
+    const component = planData.components[name];
+    if (component && !trail.includes(name)) {
+      Object.entries(component).forEach(([part, count]) => addIngredient(totals, part, amount * count, [...trail, name]));
+      return;
+    }
+    const material = canonicalMaterialName(name);
+    totals[material] = (totals[material] || 0) + amount;
+  }
+
+  function calculateMaterials(stageId) {
+    const stagePlan = planData.stages[stageId];
+    if (!stagePlan) return {};
+    const totals = {};
+    const counts = getPlan(stageId);
+    Object.entries(stagePlan.recipes).forEach(([item, recipe]) => {
+      const quantity = Math.max(0, Number(counts[item]) || 0);
+      Object.entries(recipe).forEach(([material, amount]) => addIngredient(totals, material, quantity * amount));
+    });
+    return totals;
+  }
+
+  function buildMaterialRows(stageId, baselineRows) {
+    const calculated = calculateMaterials(stageId);
+    if (!Object.keys(calculated).length) return baselineRows;
+    const baseline = {};
+    baselineRows.forEach((row) => {
+      const name = canonicalMaterialName(row.name);
+      baseline[name] ||= { amount: 0, details: [], icon: row.icon };
+      baseline[name].amount += numericTarget(row.quantity);
+      if (row.detail && !baseline[name].details.includes(row.detail)) baseline[name].details.push(row.detail);
+    });
+    const rows = Object.entries(calculated).map(([name, amount]) => {
+      const fixed = baseline[name]?.amount || 0;
+      const total = Math.max(amount, fixed);
+      return {
+        name,
+        quantity: Number.isInteger(total) ? total : total.toFixed(1),
+        detail: baseline[name]?.details.join("；") || "按制作计划自动汇总",
+        note: fixed > amount ? `固定目标不低于 ${fixed}` : "制作计划自动汇总",
+        icon: planData.materials[name]?.icon || baseline[name]?.icon
+      };
+    });
+    const calculatedNames = new Set(Object.keys(calculated));
+    baselineRows.forEach((row) => {
+      if (!calculatedNames.has(canonicalMaterialName(row.name))) rows.push({ ...row, note: row.group || "固定目标" });
+    });
+    return rows;
+  }
+
+  function renderBankTable(rows, showChapter = false, editable = false) {
     return `
       <div class="item-bank-wrap">
         <table class="item-bank">
@@ -64,7 +152,12 @@
                     <strong>${row.name}</strong>
                   </div>
                 </td>
-                <td><b class="item-bank__quantity">${row.quantity || "—"}</b></td>
+                <td>${editable ? `
+                  <div class="quantity-stepper" data-plan-item="${escapeHtml(row.name)}">
+                    <button type="button" data-qty-action="minus" aria-label="减少 ${escapeHtml(row.name)}">−</button>
+                    <input type="number" min="0" max="99" step="1" value="${row.quantity}" aria-label="${escapeHtml(row.name)}数量">
+                    <button type="button" data-qty-action="plus" aria-label="增加 ${escapeHtml(row.name)}">+</button>
+                  </div>` : `<b class="item-bank__quantity">${row.quantity ?? "—"}</b>`}</td>
                 <td><span class="item-bank__detail">${row.detail || "—"}</span></td>
                 <td><span class="item-bank__meta">${showChapter ? row.chapter : row.note || row.group || "—"}</span></td>
               </tr>
@@ -72,7 +165,34 @@
           </tbody>
         </table>
       </div>
+      ${editable ? `<div class="plan-submit"><span>默认按四人总量；修改只在点击提交后生效</span><button type="button" id="submit-crafting-plan">提交计划并更新材料</button></div>` : ""}
     `;
+  }
+
+  function wireCraftPlanner(stageId) {
+    const steppers = content.querySelectorAll("[data-plan-item]");
+    steppers.forEach((stepper) => {
+      const input = stepper.querySelector("input");
+      stepper.querySelectorAll("[data-qty-action]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const delta = button.dataset.qtyAction === "plus" ? 1 : -1;
+          input.value = Math.min(99, Math.max(0, (Number(input.value) || 0) + delta));
+        });
+      });
+      input.addEventListener("change", () => {
+        input.value = Math.min(99, Math.max(0, Math.round(Number(input.value) || 0)));
+      });
+    });
+    content.querySelector("#submit-crafting-plan")?.addEventListener("click", () => {
+      const counts = {};
+      steppers.forEach((stepper) => {
+        counts[stepper.dataset.planItem] = Math.min(99, Math.max(0, Math.round(Number(stepper.querySelector("input").value) || 0)));
+      });
+      savePlan(stageId, counts);
+      planNoticeStage = stageId;
+      currentChapter = "materials";
+      renderStagePage();
+    });
   }
 
   function renderStageNav() {
@@ -99,6 +219,7 @@
   function setStage(id, addHistory) {
     currentStage = id;
     currentChapter = defaultChapter(id);
+    planNoticeStage = null;
     searchInput.value = "";
     updateSearchClear();
     if (addHistory) history.pushState({ stage: id }, "", `?stage=${id}`);
@@ -186,6 +307,7 @@
 
     const chapter = stage.chapters[currentChapter];
     const bank = getBank(stage.id, currentChapter);
+    const editableBank = Boolean(bank && currentChapter === "crafts" && planData.stages[stage.id]);
     content.innerHTML = `
       ${renderStageHero(stage)}
       <nav class="chapter-tabs" aria-label="阶段章节">
@@ -199,16 +321,19 @@
         <header class="section-heading">
           <div><span>CHAPTER</span><h2>${chapter.label}</h2></div>
         </header>
-        ${bank ? renderBankTable(bank) : `<div class="card-grid">${chapter.cards.map((card) => renderCard(card)).join("")}</div>`}
+        ${planNoticeStage === stage.id && currentChapter === "materials" ? `<div class="plan-updated" role="status">已按刚提交的制作数量更新材料总量。</div>` : ""}
+        ${bank ? renderBankTable(bank, false, editableBank) : `<div class="card-grid">${chapter.cards.map((card) => renderCard(card)).join("")}</div>`}
       </section>
     `;
 
     content.querySelectorAll("[data-chapter]").forEach((button) => {
       button.addEventListener("click", () => {
+        planNoticeStage = null;
         currentChapter = button.dataset.chapter;
         renderStagePage();
       });
     });
+    if (editableBank) wireCraftPlanner(stage.id);
   }
 
   function renderQuickPage() {

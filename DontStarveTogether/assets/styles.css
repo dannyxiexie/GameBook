@@ -243,6 +243,31 @@ h1 { max-width: 850px; margin: 7px 0 10px; font-size: clamp(32px, 4.2vw, 54px); 
 .item-bank__quantity { color: var(--rust); font-size: 12px; white-space: nowrap; }
 .item-bank__detail { color: #45493c; font-size: 11px; line-height: 1.45; }
 .item-bank__meta { color: #78745e; font-size: 10px; line-height: 1.4; }
+.quantity-stepper { display: grid; grid-template-columns: 26px 34px 26px; gap: 3px; align-items: center; }
+.quantity-stepper button {
+  width: 26px; height: 26px; padding: 0; color: var(--cream); background: var(--forest);
+  border: 0; border-radius: 5px; cursor: pointer; font-size: 17px; font-weight: 800;
+}
+.quantity-stepper button:hover { background: var(--rust); }
+.quantity-stepper input {
+  width: 34px; height: 26px; padding: 0; color: var(--ink); background: #f8f3e4;
+  border: 1px solid #b9ad8c; border-radius: 4px; text-align: center; font-size: 12px; font-weight: 800;
+  appearance: textfield;
+}
+.quantity-stepper input::-webkit-outer-spin-button, .quantity-stepper input::-webkit-inner-spin-button { margin: 0; appearance: none; }
+.plan-submit {
+  display: flex; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 10px;
+}
+.plan-submit span { color: #77725e; font-size: 10px; }
+.plan-submit button {
+  padding: 9px 14px; color: var(--cream); background: var(--rust); border: 0;
+  border-radius: 5px 9px 6px 8px; cursor: pointer; font-weight: 800;
+}
+.plan-submit button:hover { background: #79311f; }
+.plan-updated {
+  margin-bottom: 9px; padding: 8px 11px; color: #30462d; background: rgba(209,221,186,.72);
+  border-left: 4px solid var(--forest-light); border-radius: 4px; font-size: 11px; font-weight: 700;
+}
 
 .quick-hero { padding-bottom: 14px; border-bottom: 1px solid rgba(35,43,29,.18); }
 .quick-hero__row { display: grid; grid-template-columns: minmax(0, 1fr) 120px; gap: 40px; align-items: end; }
@@ -312,6 +337,8 @@ h1 { max-width: 850px; margin: 7px 0 10px; font-size: clamp(32px, 4.2vw, 54px); 
   .chapter-tabs button span { display: none; }
   .item-bank { min-width: 650px; }
   .item-bank th, .item-bank td { padding-inline: 9px; }
+  .plan-submit { align-items: stretch; flex-direction: column; }
+  .plan-submit button { width: 100%; }
   .count-stamp { width: 92px; min-height: 92px; }
   .quick-hero__row { gap: 12px; }
   .search-report, .site-footer { align-items: flex-start; flex-direction: column; }
