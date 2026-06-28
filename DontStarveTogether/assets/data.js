@@ -288,9 +288,16 @@ window.GUIDE_DATA = {
     food: {
       title: "食物速查",
       eyebrow: "四人厨房",
-      intro: "优先记住高频模板，不必背全食谱。阶段可以直接修改，收藏和修改结果会保存在当前浏览器。",
+      intro: "从采集即食、篝火直烤到烹饪锅料理都放在一起。阶段和收藏会保存在当前浏览器。",
       note: "数值按《饥荒联机版》常规角色整理，角色特性可能改变实际收益。",
       cards: [
+        { id: "roasted-berries", image: "烤浆果_roasted-berries.png", title: "烤浆果", badge: "篝火", stage: "前期", hunger: 12.5, health: 1, sanity: 0, recipe: "浆果放在火上烤", source: "浆果丛采集；要吃时再烤，烤后坏得更快。", tags: ["浆果", "采集", "直烤"] },
+        { id: "roasted-carrot", image: "烤胡萝卜_roasted-carrot.png", title: "烤胡萝卜", badge: "篝火", stage: "前期", hunger: 12.5, health: 3, sanity: 0, recipe: "胡萝卜放在火上烤", source: "地面直接采集；比生吃多回 2 生命。", tags: ["胡萝卜", "采集", "直烤"] },
+        { id: "toasted-seeds", image: "烤种子_toasted-seeds.png", title: "烤种子", badge: "应急", stage: "前期", hunger: 4.6875, health: 1, sanity: 0, recipe: "种子放在火上烤", source: "鸟会掉落；只适合应急，优先留作种植。", tags: ["种子", "采集", "直烤"] },
+        { id: "roasted-birchnut", image: "烤桦栗_roasted-birchnut.png", title: "烤桦栗", badge: "篝火", stage: "前期", hunger: 9.375, health: 1, sanity: 0, recipe: "桦栗放在火上烤", source: "秋季砍大桦树；也可留作种树或什锦干果。", tags: ["桦栗", "桦树林", "直烤"] },
+        { id: "butterfly-wings", image: "蝴蝶翅膀_butterfly-wings.png", title: "蝴蝶翅膀", badge: "直接吃", stage: "前期", hunger: 9.375, health: 8, sanity: 0, recipe: "直接食用", source: "白天击杀蝴蝶；前期低风险回血。", tags: ["蝴蝶", "采集", "治疗"] },
+        { id: "blue-cap", image: "蓝蘑菇_blue-cap.png", title: "生蓝蘑菇", badge: "应急治疗", stage: "前期", hunger: 12.5, health: 20, sanity: -15, recipe: "不要烤，直接吃", source: "夜间采蓝蘑菇；回血快，但会大幅扣精神。", tags: ["蘑菇", "夜晚", "治疗"] },
+        { id: "cooked-green-cap", image: "烤绿蘑菇_cooked-green-cap.png", title: "烤绿蘑菇", badge: "精神", stage: "前期", hunger: 0, health: -1, sanity: 15, recipe: "绿蘑菇放在火上烤", source: "黄昏采绿蘑菇；必须烤熟，生吃扣 50 精神。", tags: ["蘑菇", "黄昏", "精神", "直烤"] },
         { id: "meatballs", image: "meatballs.png", title: "肉丸", badge: "主食", stage: "前期", hunger: 62.5, health: 3, sanity: 5, recipe: "1 怪物肉 + 3 冰 / 浆果", source: "蜘蛛或猎犬供肉；最省事主食。", tags: ["肉", "冰", "锅"] },
         { id: "butter-muffin", image: "蝴蝶松饼_butter-muffin.png", title: "蝴蝶松饼", badge: "治疗", stage: "前期", hunger: 37.5, health: 20, sanity: 5, recipe: "1 蝴蝶翅膀 + 1 蔬菜 + 2 树枝", source: "白天抓蝴蝶；不能放肉。", tags: ["蝴蝶", "蔬菜", "治疗"] },
         { id: "froggle-bunwich", image: "蛙腿三明治_froggle-bunwich.png", title: "蛙腿三明治", badge: "治疗", stage: "前期", hunger: 37.5, health: 20, sanity: 5, recipe: "1 蛙腿 + 1 蔬菜 + 2 树枝", source: "池塘或下雨天取蛙腿。", tags: ["青蛙", "蔬菜", "治疗"] },

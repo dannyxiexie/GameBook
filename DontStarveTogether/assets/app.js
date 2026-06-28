@@ -400,7 +400,7 @@
     return `
       <div class="food-bank-wrap">
         <table class="food-bank">
-          <thead><tr><th>料理</th><th>阶段（可改）</th><th>回复</th><th>常用配方</th><th>获取 / 提醒</th><th><span class="sr-only">收藏</span>★</th></tr></thead>
+          <thead><tr><th>食物</th><th>阶段（可改）</th><th>回复</th><th>吃法 / 做法</th><th>获取 / 提醒</th><th><span class="sr-only">收藏</span>★</th></tr></thead>
           <tbody>
             ${cards.map((card) => {
               const favorite = foodFavorites.has(card.id);
